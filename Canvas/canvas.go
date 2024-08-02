@@ -33,8 +33,8 @@ func (cb *ColorByte) get_alpha() byte {
 }
 
 type Canvas struct {
-    height int
-    width int
+    height uint_32
+    width uint_32
     colors [][]ColorByte
 }
 

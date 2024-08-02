@@ -6,23 +6,13 @@ import (
 )
 
 // Constants
+var HEAD      = [...]byte{0x89,0x50,0x4E,0x47,0x0D,0x0A,0x1A,0x0A}
+var IEND_SIZE = [...]byte{0x00,0x00,0x00,0x00}
+var IEND_NAME = [...]byte{0x49,0x45,0x4E,0x44}
+var IEND_CRC  = [...]byte{0xAE,0x42,0x60,0x82}
 
-const HEAD uint_64 = 0x89504E470D0A1A0A
-
-const IEND_SIZE uint_32 = 0x00000000
-const IEND_NAME uint_32 = 0x49454E44
-const IEND_CRC uint_32 = 0xAE426082
-
-func CRC() {
-}
-
-// ALL Chunks
-//  - length
-//  - type/name
-//  - data
-//  - CRC
-
-func MakeHeader() {
+func MakeHeader(file * File) {
+    file.write(HEAD)
 }
 
 // The IHDR chunk must appear FIRST. It contains:
@@ -33,29 +23,34 @@ func MakeHeader() {
 //   Compression method: 1 byte
 //   Filter method:      1 byte
 //   Interlace method:   1 byte
-func MakeIHDR() {
+func MakeIHDR(file * File, c *canvas) {
 }
 
-func MakeIDAT(l uint_32, t uint_32, d *Canvas, s int, e int) {
-    var CRC uint_32 = 0x00000000
+func CRC() {
 }
 
-func CalcIDATs() int {
+func MakeIDAT(l uint_32, t uint_32, c *Canvas, s int, e int) {
+}
+
+func CalcIDATs(file * File) int {
     return -1
 }
 
-func MakeIEND() {
+func MakeIEND(file * File) {
+    file.write(IEND_SIZE)
+    file.write(IEND_NAME)
+    file.write(IEND_CRC)
 }
 
-func SaveCanvas(c *Canvas, f string) {
+func SaveCanvas(c *Canvas, s string) {
     // open file 
-    file, errr := os.Create(*out_ptr) 
-	if (errr != nil) {
+    file, err := os.Create(s) 
+	if (err != nil) {
 		panic(errr)
 	}
     
-    MakeHeader()
-    MakeIHDR()
+    MakeHeader(file)
+    MakeIHDR(file)
     
     num := CalcIDATs()
 
@@ -63,5 +58,5 @@ func SaveCanvas(c *Canvas, f string) {
         MakeIDAT()
     }
     
-    MakeIEND()
+    MakeIEND(file)
 }
