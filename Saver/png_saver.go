@@ -6,30 +6,48 @@ import (
 )
 
 // Constants
-var HEAD      = [...]byte{0x89,0x50,0x4E,0x47,0x0D,0x0A,0x1A,0x0A}
-var IEND_SIZE = [...]byte{0x00,0x00,0x00,0x00}
-var IEND_NAME = [...]byte{0x49,0x45,0x4E,0x44}
-var IEND_CRC  = [...]byte{0xAE,0x42,0x60,0x82}
+var HEAD[4]byte      = [8]byte{0x89,0x50,0x4E,0x47,0x0D,0x0A,0x1A,0x0A}
+var IEND_SIZE[4]byte = [4]byte{0x00,0x00,0x00,0x00}
+var IEND_NAME[4]byte = [4]byte{0x49,0x45,0x4E,0x44}
+var IEND_CRC[4]byte  = [4]byte{0xAE,0x42,0x60,0x82}
+const bit0 byte      = 0xFF000000
+const bit1 byte      = 0x00FF0000
+const bit2 byte      = 0x0000FF00
+const bit3 byte      = 0x000000FF
+// x^32+x^26+x^23+x^22+x^16+x^12+x^11+x^10+x^8+x^7+x^5+x^4+x^2+x+1
+const CRC uint32     = 0x04C11DB7
+
+func wrt_num(num uint32, file *os.File){
+    bits := []byte{byte(num & bit0),byte(num & bit1), byte(num & bit2), byte(num & bit3)}
+    file.Write(bits)
+}
 
 func MakeHeader(file * File) {
-    file.write(HEAD)
+    file.Write(HEAD)
 }
 
 // The IHDR chunk must appear FIRST. It contains:
-//   Width:              4 bytes
-//   Height:             4 bytes
-//   Bit depth:          1 byte
-//   Color type:         1 byte
-//   Compression method: 1 byte
-//   Filter method:      1 byte
-//   Interlace method:   1 byte
 func MakeIHDR(file * File, c *canvas) {
+    // Width: from canvas
+    wrt_num(c.width)
+    // Height: from canvas
+    wrt_num(c.height)
+    // Bit depth: 8 bits for each color/alpha value
+    file.Write(0x08)
+    // Color type: r, g, b, alpha
+    file.Write(0x06)
+    // Compression method: 
+    file.Write()
+    // Filter method: 
+    file.Write()
+    // Interlace method: 
+    file.Write()
 }
 
 func CRC() {
 }
 
-func MakeIDAT(l uint_32, t uint_32, c *Canvas, s int, e int) {
+func MakeIDAT(f *File, l uint_32, t uint_32, c *Canvas, s int, e int) {
 }
 
 func CalcIDATs(file * File) int {
@@ -45,9 +63,7 @@ func MakeIEND(file * File) {
 func SaveCanvas(c *Canvas, s string) {
     // open file 
     file, err := os.Create(s) 
-	if (err != nil) {
-		panic(errr)
-	}
+	if (err != nil) { panic(errr) }
     
     MakeHeader(file)
     MakeIHDR(file)
@@ -55,7 +71,7 @@ func SaveCanvas(c *Canvas, s string) {
     num := CalcIDATs()
 
     for i := 0; i < num; i++ {
-        MakeIDAT()
+        MakeIDAT(file)
     }
     
     MakeIEND(file)
