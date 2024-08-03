@@ -33,15 +33,19 @@ func MakeIHDR(file * File, c *canvas) {
     // Height: from canvas
     wrt_num(c.height)
     // Bit depth: 8 bits for each color/alpha value
-    file.Write(0x08)
+    file.Write([]byte{0x08})
     // Color type: r, g, b, alpha
-    file.Write(0x06)
-    // Compression method: 
-    file.Write()
-    // Filter method: 
-    file.Write()
-    // Interlace method: 
-    file.Write()
+    file.Write([]byte{0x06})
+    // Compression method: only 0 works 
+    file.Write([]byte{0x0})
+    // Filter method: only 0 works 
+    file.Write([]byte{0x0})
+    // Interlace method: not interlaced
+    file.Write([]byte{0x0})
+}
+
+// 0 none, 1 sub, 2 up, 3 avg, 4 paeth
+func Compress() {
 }
 
 func CRC() {
@@ -63,7 +67,7 @@ func MakeIEND(file * File) {
 func SaveCanvas(c *Canvas, s string) {
     // open file 
     file, err := os.Create(s) 
-	if (err != nil) { panic(errr) }
+	if (err != nil) { panic(err) }
     
     MakeHeader(file)
     MakeIHDR(file)
