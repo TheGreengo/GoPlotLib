@@ -44,13 +44,14 @@ func MakeIHDR(file * File, c *canvas) {
     file.Write([]byte{0x0})
 }
 
-// 0 none, 1 sub, 2 up, 3 avg, 4 paeth
 func Compress() {
 }
 
 func CRC() {
 }
 
+// each scanline (read: row) must have a filter type bit prepended
+// 0 none, 1 sub, 2 up, 3 avg, 4 paeth
 func MakeIDAT(f *File, l uint_32, t uint_32, c *Canvas, s int, e int) {
 }
 
