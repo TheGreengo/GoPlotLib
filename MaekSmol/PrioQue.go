@@ -17,9 +17,10 @@ func (pq PrioQue) Swap(i, j int) {
 	pq[i], pq[j] = pq[j], pq[i]
 }
 
-func (pq *PrioQue) Push(bf any) {
-	// n := len(*pq)
-	*pq = append(*pq, bf.(*ByteFreq))
+func (pq *PrioQue) Push(x any) {
+    bf := x.(*ByteFreq)
+	*pq = append(*pq, bf)
+    
 }
 
 func (pq *PrioQue) Pop() any {
@@ -28,5 +29,7 @@ func (pq *PrioQue) Pop() any {
 	item := old[n-1]
 	old[n-1] = nil 
 	*pq = old[0 : n-1]
+    //fmt.Println("Length:", len(*pq))
+    //fmt.Println(*pq)
 	return item
 }

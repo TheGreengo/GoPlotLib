@@ -18,10 +18,22 @@ type ByteFreq struct {
  
 // This should do the whole thring
 func HuffmanEncode(name string) {
-    thang := CountSymbols(name)
+    counts := CountSymbols(name)
 
-    for _,i := range thang {
-        fmt.Printf("%d %c %d\n", i.val, i.val, i.freq)
+    // Here we need to 
+    ordered := make(PrioQue, len(counts)) 
+    
+    for i,thing := range counts {
+        ordered[i] = &ByteFreq{
+            val: thing.val,
+            freq: thing.freq,
+        }
+    }
+
+    fmt.Println("Ordered",ordered)
+    for len(ordered) > 0 {
+        thing := ordered.Pop()
+        fmt.Println(thing)
     }
 }
 
