@@ -1,9 +1,6 @@
 package MaekSmol
 
-import (
-)
-
-type PrioQue []ByteFreq
+type PrioQue []ByteNode
 
 func (pq PrioQue) Len() int { 
     return len(pq) 
@@ -18,7 +15,7 @@ func (pq PrioQue) Swap(i, j int) {
 }
 
 func (pq *PrioQue) Push(bf any) {
-	*pq = append(*pq, bf.(ByteFreq))
+	*pq = append(*pq, bf.(ByteNode))
 }
 
 func (pq *PrioQue) Pop() any {

@@ -12,38 +12,67 @@ package MaekSmol
 import ( "os";"fmt";"sort";"container/heap" )
 
 type ByteFreq struct {
-    val byte
+    val  byte
     freq uint
 }
  
 type ByteNode struct {
-    freq uint
-    val byte
-    left *ByteNode
+    freq  uint
+    leaf  bool
+    val   byte
+    left  *ByteNode
     right *ByteNode
 }
 
+func printTree(bn *ByteNode, curr string) {
+    if (*bn).leaf {
+        fmt.Printf("%4c %10s %10d\n", (*bn).val,curr,(*bn).freq)
+    }
+    if (*bn).left != nil {
+        printTree((*bn).left, curr + "0")
+    }
+    if (*bn).right != nil {
+        printTree((*bn).right, curr + "1")
+    }
+}
 // This should do the whole thring
+// Note: we could do this a faster way
 func HuffmanEncode(name string) {
     counts := CountSymbols(name)
 
     // Here we need to 
     ordered := make(PrioQue, len(counts)) 
     
-    for i,thing := range counts {
-        ordered[i] = ByteFreq{
-            val: thing.val,
-            freq: thing.freq,
+    for i,bf := range counts {
+        ordered[i] = ByteNode{
+            freq: bf.freq,
+            leaf: true,
+            val: bf.val,
+            left: nil,
+            right: nil,
         }
     }
 
     heap.Init(&ordered)
+    heap.Push(&ordered, ByteNode{freq: uint(4), leaf: false, val: byte(0), left: nil, right: nil})
 
     fmt.Println("Ordered", ordered)
-    for len(ordered) > 0 {
-        thing := heap.Pop(&ordered)
-        fmt.Println(thing)
+    for len(ordered) > 1 {
+        l1 := heap.Pop(&ordered).(ByteNode)
+        l2 := heap.Pop(&ordered).(ByteNode)
+
+        nn := ByteNode{
+            freq: l1.freq + l2.freq,
+            leaf: false,
+            val: byte(0),
+            left: &l2,
+            right: &l1,
+        }
+
+        heap.Push(&ordered, nn)
     }
+    final := heap.Pop(&ordered).(ByteNode)
+    printTree(&final,"")
 }
 
 // This should go through the file, count every symbol, and return 
