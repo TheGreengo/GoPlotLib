@@ -9,13 +9,20 @@ package MaekSmol
 * - figure out a way to un-encode the stuff
 */
 
-import ( "os";"fmt";"sort" )
+import ( "os";"fmt";"sort";"container/heap" )
 
 type ByteFreq struct {
     val byte
     freq uint
 }
  
+type ByteNode struct {
+    freq uint
+    val byte
+    left *ByteNode
+    right *ByteNode
+}
+
 // This should do the whole thring
 func HuffmanEncode(name string) {
     counts := CountSymbols(name)
@@ -24,21 +31,19 @@ func HuffmanEncode(name string) {
     ordered := make(PrioQue, len(counts)) 
     
     for i,thing := range counts {
-        ordered[i] = &ByteFreq{
+        ordered[i] = ByteFreq{
             val: thing.val,
             freq: thing.freq,
         }
     }
 
-    fmt.Println("Ordered",ordered)
+    heap.Init(&ordered)
+
+    fmt.Println("Ordered", ordered)
     for len(ordered) > 0 {
-        thing := ordered.Pop()
+        thing := heap.Pop(&ordered)
         fmt.Println(thing)
     }
-}
-
-// This should go through 
-func GetTree() {
 }
 
 // This should go through the file, count every symbol, and return 
