@@ -1,14 +1,8 @@
 package MaekSmol
 
 import (
-	"container/heap"
 )
 
-type ByteFreq struct {
-    val byte
-    freq uint
-}
- 
 type PrioQue []*ByteFreq
 
 func (pq PrioQue) Len() int { 
@@ -24,7 +18,7 @@ func (pq PrioQue) Swap(i, j int) {
 }
 
 func (pq *PrioQue) Push(bf any) {
-	n := len(*pq)
+	// n := len(*pq)
 	*pq = append(*pq, bf.(*ByteFreq))
 }
 

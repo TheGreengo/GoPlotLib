@@ -9,9 +9,7 @@ package MaekSmol
 * - figure out a way to un-encode the stuff
 */
 
-import (
-    "os"
-)
+import ( "os";"fmt";"sort" )
 
 type ByteFreq struct {
     val byte
@@ -19,7 +17,12 @@ type ByteFreq struct {
 }
  
 // This should do the whole thring
-func HoffmanEncode() {
+func HuffmanEncode(name string) {
+    thang := CountSymbols(name)
+
+    for _,i := range thang {
+        fmt.Printf("%d %c %d\n", i.val, i.val, i.freq)
+    }
 }
 
 // This should go through 
@@ -28,7 +31,7 @@ func GetTree() {
 
 // This should go through the file, count every symbol, and return 
 func CountSymbols(name string) []ByteFreq {
-    var bytes make([]ByteFreq, 256)
+    bytes := make([]ByteFreq, 256)
 
     var i uint
     for i = 0; i < 256; i++ {
@@ -44,12 +47,24 @@ func CountSymbols(name string) []ByteFreq {
 		
 		if (err != nil) { break }
         
-        for i = 0; i < n; i++ {
-            bytes[int(bits[i])]
+        for i = 0; i < uint(n); i++ {
+            bytes[int(bits[i])].freq += 1
         }
     }
-
+    
     file.Close()
+    
+    sort.Slice(bytes, func(i, j int) bool {
+        return bytes[i].freq > bytes[j].freq
+    })
 
-    return counts
+    low := uint(1)
+    for i = 0; i < 256; i++ {
+        low = bytes[i].freq
+        if low == 0 { break }
+    }
+
+    bytes = bytes[0:i]
+
+    return bytes 
 }
