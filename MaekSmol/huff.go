@@ -2,9 +2,10 @@ package MaekSmol
 
 /*
 * So..... the steps are thus:
-* - get a count the frequency of all of the bytes
-* - make a tree with all of the things
-* - use this to make the encodings
+* X get a count the frequency of all of the bytes
+* X make a tree with all of the things
+* X use this to make the encodings
+* - get the binary representation of the codes
 * - write a copy of the file with the encoded values
 * - figure out a way to un-encode the stuff
 */
@@ -24,19 +25,37 @@ type ByteNode struct {
     right *ByteNode
 }
 
+type Encode struct {
+    size uint
+    num uint
+}
+
+// func getEncodes(bn *ByteNode, enc *map[byte]Encode, lvl uint, val uint) {
+//     if (*bn).leaf {
+//         fmt.Printf("%4c %10s %10d\n", (*bn).val,curr,(*bn).freq)
+//     }
+//     if (*bn).left != nil {
+//         getTreeDepth((*bn).left, enc, lvl + 1, val + (math.Pow(2,lvl))) 
+//     }
+//     if (*bn).right != nil {
+//         getTreeDepth((*bn).right, enc, lvl + 1, val)
+//     }
+// }
+
 func printTree(bn *ByteNode, curr string) {
     if (*bn).leaf {
         fmt.Printf("%4c %10s %10d\n", (*bn).val,curr,(*bn).freq)
     }
     if (*bn).left != nil {
-        printTree((*bn).left, curr + "0")
+        printTree((*bn).left, curr + "1")
     }
     if (*bn).right != nil {
-        printTree((*bn).right, curr + "1")
+        printTree((*bn).right, curr + "0")
     }
 }
-// This should do the whole thring
-// Note: we could do this a faster way
+
+// This should do the whole thing
+// Note: we could do this the faster way
 func HuffmanEncode(name string) {
     counts := CountSymbols(name)
 
@@ -54,7 +73,6 @@ func HuffmanEncode(name string) {
     }
 
     heap.Init(&ordered)
-    heap.Push(&ordered, ByteNode{freq: uint(4), leaf: false, val: byte(0), left: nil, right: nil})
 
     fmt.Println("Ordered", ordered)
     for len(ordered) > 1 {

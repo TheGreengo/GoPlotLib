@@ -7,6 +7,9 @@ func (pq PrioQue) Len() int {
 }
 
 func (pq PrioQue) Less(i, j int) bool {
+    if (pq[i].freq == pq[j].freq) {
+        return pq[i].val < pq[j].val
+    }
 	return pq[i].freq < pq[j].freq
 }
 
