@@ -27,9 +27,23 @@ func NewCanvas(w uint32, h uint32) Canvas {
     return Canvas{height: h, width: w, colors: dat}
 }
 
-func (c *Canvas) set_pix(row int, col int, r int, g int, b int, a int) {
+func (c *Canvas) fillCanvas(color [4]int) {
+    for i := 0; i < c.height; i++ {
+        for j := 0; j < c.width; j++ {
+            c.colors[i][j] = color
+        }
+    }
+}
+
+func (c *Canvas) setPix(row int, col int, r int, g int, b int, a int) {
     c.colors[row][col][RED]   = byte(r)
     c.colors[row][col][GREEN] = byte(g)
     c.colors[row][col][BLUE]  = byte(b)
     c.colors[row][col][ALPHA] = byte(a)
+}
+
+// So let's think about things
+func (c *Canvas) setLine(x1 int, y1 int, x2 int, y2 int, w int) {
+    if w > 5 { w = 5 }
+    if w < 0 { w = 0 }
 }

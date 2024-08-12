@@ -16,6 +16,13 @@ Then the Huffman encoding takes place, encoding for 0-288 with the following bre
 |257-285|An 8-bit encoding of the length of the following match|
 |287-288|Reserved for future purposes. Shouldn't be used.|
 
+There will also be a separate tree for encoding the distances. This results in the final form of each block as being 
+
+| ID | Symbol Tree | Distance Tree | Compressed Data|
+|--|--|--|--|
+
+
+
 ### LZ77
 
 ### Huffman Encoding

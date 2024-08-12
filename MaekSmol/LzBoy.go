@@ -15,9 +15,16 @@ const WINDEHR_LEN uint = 32678
 
 func LZ77() {
     // make window
+    windehr := [WINDEHR_LEN]byte
+
     // pull in first character
     // loop through, checking if the window contains a substring of more
     // than 2 characters
+}
+
+func addToWindehr(windehr *[WINDEHR_LEN]byte, ind *int, bit byte) {
+    windehr[*ind] = bit
+    *ind = (*ind + 1) % WINDEHR_LEN
 }
 
 // This should be the helper function to find if something is in 
