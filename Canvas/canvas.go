@@ -1,4 +1,4 @@
-package Canvas
+package canvas
 
 const RED int = 0
 const GREEN int = 1
@@ -6,8 +6,8 @@ const BLUE int = 2
 const ALPHA int = 3
 
 type Canvas struct {
-    height uint32
-    width uint32
+    Height uint32
+    Width uint32
     colors [][][4]byte
 }
 
@@ -24,12 +24,14 @@ func NewCanvas(w uint32, h uint32) Canvas {
             dat[i][j] = d
         }
     }
-    return Canvas{height: h, width: w, colors: dat}
+    return Canvas{Height: h, Width: w, colors: dat}
 }
 
-func (c *Canvas) fillCanvas(color [4]int) {
-    for i := 0; i < c.height; i++ {
-        for j := 0; j < c.width; j++ {
+func (c *Canvas) fillCanvas(color [4]byte) {
+    var i, j uint32
+
+    for i = 0; i < c.Height; i++ {
+        for j = 0; j < c.Width; j++ {
             c.colors[i][j] = color
         }
     }
