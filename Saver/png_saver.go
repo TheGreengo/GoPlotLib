@@ -8,7 +8,9 @@ import (
 // Constants
 var HEAD[]byte         = []byte{0x89,0x50,0x4E,0x47,0x0D,0x0A,0x1A,0x0A}
 var IEND_SIZE[]byte    = []byte{0x00,0x00,0x00,0x00}
+var IHDR_SIZE[]byte    = []byte{0x00,0x00,0x00,0x0D}
 var IEND_NAME[]byte    = []byte{0x49,0x45,0x4E,0x44}
+var IHDR_NAME[]byte    = []byte{0x49,0x48,0x44,0x52}
 var IEND_CRC[]byte     = []byte{0xAE,0x42,0x60,0x82}
 const bit0 uint32      = 0xFF000000
 const bit1 uint32      = 0x00FF0000
@@ -28,6 +30,10 @@ func MakeHeader(file *os.File) {
 
 // The IHDR chunk must appear FIRST. It contains:
 func MakeIHDR(file *os.File, c *canvas.Canvas) {
+    // Write the size of the IHDR
+    file.Write(IHDR_SIZE)
+    // Write the IHDR ID
+    file.Write(IHDR_NAME)
     // Width: from canvas
     wrt_num((*c).Width, file)
     // Height: from canvas
