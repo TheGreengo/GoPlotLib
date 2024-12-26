@@ -24,7 +24,7 @@ func PrintBits(fil string) {
 
         fmt.Println("---------------------------------------------------------------------------------------")
         for i := 0; i < n; i++ {
-            fmt.Printf("%10d ", bits[i])
+            fmt.Printf("%10x ", bits[i])
         }
         fmt.Printf("\n")
 
